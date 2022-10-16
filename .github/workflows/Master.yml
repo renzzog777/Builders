@@ -1,18 +1,29 @@
-name: Automatic PR
+name: Push Detection and pull request
 on:
   push:
-    branches: ["develop"]
+    branches:
+      - develop
 
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: pull-request
+      - name: Inspect
+        uses: actions/checkout@v3
+      - name: PR
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "master"
           github_token: ${{ secrets.GIT_TOKEN }}
-          pr_label: "feature, automated pr"
-          pr_title: "Automatic PR"
+          pr_label: "Feature, final stage"
+          pr_title: "Push Detection and pull request"
+      - name: Merging develop and master
+        run: |
+            git fetch --unshallow
+            git switch master
+            git pull origin develop
+            git merge --strategy-option theirs --no-ff develop  -m "Merge Develop into Master"
