@@ -27,3 +27,5 @@ jobs:
             git merge  --strategy-option theirs --no-ff  ${{ github.ref }}  -m "Auto-merge ${{ github.ref }} back to develop"
             git push origin develop
             git push -d origin ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GENERAL }}     
