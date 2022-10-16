@@ -1,21 +1,34 @@
-name: Update cms/master
+name: Merge Develop Into Main
 
 on:
   push:
     branches:
-      - master
+      - develop
 
 jobs:
-  update-cms-master:
-    name: Merge master into release after a PR is merged
+  main:
+    name: Create PR Develop to Main
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: merge
-        uses: mtanzi/action-automerge@v1
-        id: merge
+      - name: git checkout
+        uses: actions/checkout@v3
         with:
-          github_token: ${{ GIT_TOKEN }}
-          source: 'develop'
-          target: 'master'
+          token: ${{ secrets.GIT_TOKEN}}
+
+      # https://github.com/marketplace/actions/github-pull-request-action
+      - name: create pull request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.GIT_TOKEN}}
+          destination_branch: master
+          
+
+      # https://github.com/marketplace/actions/enable-pull-request-automerge
+      - name: enable automerge
+        if: steps.open-pr.outputs.pr_number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+          pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
+          merge-method: merge
