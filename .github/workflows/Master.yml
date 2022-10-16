@@ -20,6 +20,6 @@ jobs:
             git switch master
             git pull origin develop
             git merge  --strategy-option theirs --no-ff develop -m "Auto-merge dev to master"
-            git push origin develop
+            
             
             
