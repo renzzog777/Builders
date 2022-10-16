@@ -1,20 +1,21 @@
+name: Update cms/master
 
-name: Automatic PR
 on:
   push:
     branches:
       - develop
 
 jobs:
-  create-pull-request:
+  update-cms-master:
+    name: Merge master into release after a PR is merged
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
         with:
-          destination_branch: "master"
-          github_token: ${{ secrets.GIT_TOKEN }}
-          pr_label: "feature, automated pr"
-          pr_title: "Automatic PR"
+          github_token: ${{ GIT_TOKEN }}
+          source: 'develop'
+          target: 'master'
