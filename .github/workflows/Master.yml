@@ -1,34 +1,24 @@
-name: Merge Develop Into Main
-
+name: Dev to Master
+run-name: ${{ github.actor }} is testing automerge
 on:
   push:
-    branches:
-      - develop
-
+   branches:
+     - develop
 jobs:
-  main:
-    name: Create PR Develop to Main
+  merge-on-master:
     runs-on: ubuntu-latest
     steps:
-      - name: git checkout
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GIT_TOKEN}}
-
-      # https://github.com/marketplace/actions/github-pull-request-action
-      - name: create pull request
-        id: open-pr
-        uses: repo-sync/pull-request@v2
-        with:
-          github_token: ${{ secrets.GIT_TOKEN}}
-          destination_branch: master
-          
-
-      # https://github.com/marketplace/actions/enable-pull-request-automerge
-      - name: enable automerge
-        if: steps.open-pr.outputs.pr_number != ''
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          token: ${{ secrets.GIT_TOKEN }}
-          pull-request-number: ${{ steps.open-pr.outputs.pr_number }}
-          merge-method: merge
+      - name: Set Git config
+        run: |
+            git config --global user.email "email@email.com"
+            git config --global user.name "renzzog777"
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Merge dev to master
+        run: |
+            git fetch --unshallow
+            git switch master
+            git pull origin develop
+            git merge  --strategy-option theirs --no-ff develop -m "Auto-merge dev to master"
+            git push origin master
+            
