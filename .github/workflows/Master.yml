@@ -13,6 +13,6 @@ jobs:
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "master"
-          github_token: ${{ secrets.TOKEN_GENERAL }}
+          github_token: ${{ secrets.GIT_TOKEN }}
           pr_label: "feature, automated pr"
           pr_title: "Automatic PR"
