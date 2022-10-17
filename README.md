@@ -36,11 +36,15 @@ git add .
 git commit -m "Message"
 git push origin feature/"created branch"
 ```
-- Github will request for the repository token, these are the credentials:
+- Github will request for the repository token, these are the credentials (Token is coded in base 64):
 
 ```sh
 User: renzzog777
-token: 'given in the email'
+token: 'Z2hwX2Eyc3BxRkl6OXdOV1RUNk9heE14dXpNTDRaTXE4ZDMzSUdLQQ=='
+```
+You can decode the token with the following command:
+```sh
+echo 'given coded token' | base64 --decode
 ```
 
 - The changes will be automatically upload into the remote 'develop' branch. Under the "actions" tab you must see a message like this: 
