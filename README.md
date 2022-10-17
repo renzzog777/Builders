@@ -40,7 +40,7 @@ git push origin feature/"created branch"
 
 ```sh
 User: renzzog777
-token: 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
+token: 'given in the email'
 ```
 
 - The changes will be automatically upload into the remote 'develop' branch. Under the "actions" tab you must see a message like this: 
